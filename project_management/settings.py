@@ -80,8 +80,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django', # Important for mysql-connector-python
         'NAME': 'project_management',      # Replace with your database name
-        'USER': 'zeenux',          # Replace with your MySQL user
-        'PASSWORD': 'azeemi47',  # Replace with your MySQL password
+        'USER': 'usr',          # Replace with your MySQL user
+        'PASSWORD': 'password',  # Replace with your MySQL password
         'HOST': 'localhost',             # Or your MySQL server's hostname/IP
         'PORT': '3306',                 # Default MySQL port
          'test': {  # Separate settings for testing
