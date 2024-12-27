@@ -17,4 +17,6 @@ urlpatterns = [
 
     path('api-token-auth/', views.CustomAuthToken.as_view()),  # Add this line
 
+    path('memb/',views.CurrentDateTime,name='memb'),
+
 ]

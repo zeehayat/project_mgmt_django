@@ -1,3 +1,7 @@
+import datetime
+
+from django.http import HttpResponse
+from django.template.context_processors import request
 from rest_framework import generics, permissions, filters
 from .models import Project, Task, Notification, UserCommunicationChannel, Role, ProjectMember, UserRole
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -112,3 +116,9 @@ class CustomAuthToken(ObtainAuthToken):
         return Response({
             'token': token.key
         })
+
+class CurrentDateTime:
+    def current_datetime(request):
+        now = datetime.datetime.now()
+        html = '<html lang="en"><body>It is now %s.</body></html>' % now
+        return HttpResponse(html)

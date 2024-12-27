@@ -9,8 +9,11 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
+from decouple import config, Csv
 from pathlib import Path
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-c()$np_y1re_r%rvhczq803y4h&y)u)%o-et7t-us#odx(cnnh"
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS',cast=Csv() )
 
 
 # Application definition
@@ -79,11 +82,11 @@ WSGI_APPLICATION = "project_management.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'mysql.connector.django', # Important for mysql-connector-python
-        'NAME': 'project_management',      # Replace with your database name
-        'USER': 'usr',          # Replace with your MySQL user
-        'PASSWORD': 'password',  # Replace with your MySQL password
-        'HOST': 'localhost',             # Or your MySQL server's hostname/IP
-        'PORT': '3306',                 # Default MySQL port
+        'NAME': config('DB_NAME'),      # Replace with your database name
+        'USER': config('DB_USER'),          # Replace with your MySQL user
+        'PASSWORD': config('DB_PASSWORD'),  # Replace with your MySQL password
+        'HOST': config('DB_HOST'),             # Or your MySQL server's hostname/IP
+        'PORT': config('DB_PORT'),                 # Default MySQL port
          'test': {  # Separate settings for testing
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',  # Use an in-memory database for faster tests
