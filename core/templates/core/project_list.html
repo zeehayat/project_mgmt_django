@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Projects</h1>
+
+<ul>
+    {% for project in projects %}
+    <li>
+        <h2>{{ project.name }}</h2>
+        <p>{{ project.description }}</p>
+        <p>Owner: {{ project.owner.username }}</p>
+        <a href="{% url 'core:task_list' project.id %}">View Tasks</a>
+    </li>
+    {% empty %}
+    <li>No projects yet.</li>
+    {% endfor %}
+</ul>
+
+<a href="{% url 'core:project_create' %}">Create Project</a>
+</body>
+</html>

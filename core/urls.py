@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-
+app_name='core'
 urlpatterns = [
     path('users/', views.UserListCreateView.as_view(), name='user-list-create'),
     path('users/<int:pk>/', views.UserRetrieveUpdateDestroyView.as_view(), name='user-retrieve-update-destroy'),
@@ -17,6 +17,13 @@ urlpatterns = [
 
     path('api-token-auth/', views.CustomAuthToken.as_view()),  # Add this line
 
-    path('memb/',views.CurrentDateTime,name='memb'),
+    path('memb/',views.TCurrentDateTime.as_view(),name='memb'),
+
+
+    ### New
+    path('', views.project_list, name='project_list'),
+    path('projects/create/', views.project_create, name='project_create'),
+    path('projects/<int:project_id>/tasks/', views.task_list, name='task_list'),
+    path('projects/<int:project_id>/tasks/create/', views.task_create, name='task_create'),
 
 ]

@@ -2,6 +2,7 @@ import datetime
 
 from django.http import HttpResponse
 from django.template.context_processors import request
+from django.views import View
 from rest_framework import generics, permissions, filters
 from .models import Project, Task, Notification, UserCommunicationChannel, Role, ProjectMember, UserRole
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -117,8 +118,44 @@ class CustomAuthToken(ObtainAuthToken):
             'token': token.key
         })
 
-class CurrentDateTime:
-    def current_datetime(request):
+class TCurrentDateTime(View):
+    def current_datetime(self, request):
         now = datetime.datetime.now()
         html = '<html lang="en"><body>It is now %s.</body></html>' % now
         return HttpResponse(html)
+
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Project, Task
+from .forms import ProjectForm, TaskForm
+
+def project_list(request):
+    projects = Project.objects.all()
+    return render(request, 'core/project_list.html', {'projects': projects})
+
+def task_list(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    tasks = Task.objects.filter(project=project)
+    return render(request, 'core/task_list.html', {'tasks': tasks, 'project': project})
+
+def project_create(request):
+    if request.method == 'POST':
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('core:project_list')
+    else:
+        form = ProjectForm()
+    return render(request, 'core/project_form.html', {'form': form})
+
+def task_create(request, project_id):
+    project = get_object_or_404(Project, pk=project_id)
+    if request.method == 'POST':
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            task = form.save(commit=False)
+            task.project = project
+            task.save()
+            return redirect('core:task_list', project_id=project_id)
+    else:
+        form = TaskForm()
+    return render(request, 'core/task_form.html', {'form': form, 'project':project})
